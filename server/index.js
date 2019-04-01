@@ -73,7 +73,7 @@ httpServer.listen(PORT, process.env.IP || "0.0.0.0", () => {
 });
 
 const rooms = []; // 房间列表
-
+const allUsers = {};
 ioServer(httpServer).on('connection', (socket) => {
     console.log('connection',);
     RTCMultiConnectionServer.addSocket(socket);
@@ -92,7 +92,7 @@ ioServer(httpServer).on('connection', (socket) => {
     // rtc-message
   
     socket.on('rtc-message', (message) => {
-        console.log(message);
+        console.log(message, socket.id);
         if(rooms.some(x => x.roomId === message.roomId)) {
             const index = rooms.findIndex(x => x.roomId === message.roomId);
             const users = rooms[index].users;
@@ -102,11 +102,21 @@ ioServer(httpServer).on('connection', (socket) => {
                 users.push(user);
             }
 
-            socket.emit('rtc-message', { roomId: message.roomId, users });
+            socket.broadcast.emit('rtc-message', { roomId: message.roomId, users });
         } else {
             rooms.push({ roomId: message.roomId, users: [message.user] });
-            socket.emit('rtc-message', { roomId: message.roomId, users: [message.user] });
+            socket.broadcast.emit('rtc-message', { roomId: message.roomId, users: [message.user] });
             console.log(rooms)
         }
+    });
+    socket.on('rtc-message-desc', (message) => {
+        console.log('rtc-message-desc', message.type);
+        // socket.emit('rtc-message-desc', message);
+
+        socket.broadcast.emit('rtc-message-desc', message)
+    });
+    socket.on('rtc-message-ice', (message) => {
+        console.log('rtc-message-ice')
+        socket.broadcast.emit('rtc-message-ice', message);
     });
 })
