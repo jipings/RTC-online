@@ -72,7 +72,10 @@ httpServer.listen(PORT, process.env.IP || "0.0.0.0", () => {
     console.log('Server is running on port \n' + `http://localhost:${PORT}`);
 });
 
+const rooms = []; // 房间列表
+
 ioServer(httpServer).on('connection', (socket) => {
+    console.log('connection',);
     RTCMultiConnectionServer.addSocket(socket);
 
     const params = socket.handshake.query;
@@ -82,6 +85,28 @@ ioServer(httpServer).on('connection', (socket) => {
     }
 
     socket.on(params.socketCustomEvent, (message) => {
+        console.log('message', message);
         socket.broadcast.emit(params.socketCustomEvent, message);
+    });
+
+    // rtc-message
+  
+    socket.on('rtc-message', (message) => {
+        console.log(message);
+        if(rooms.some(x => x.roomId === message.roomId)) {
+            const index = rooms.findIndex(x => x.roomId === message.roomId);
+            const users = rooms[index].users;
+            const user = message.user;
+
+            if(users.indexOf(user) === -1 ) {
+                users.push(user);
+            }
+
+            socket.emit('rtc-message', { roomId: message.roomId, users });
+        } else {
+            rooms.push({ roomId: message.roomId, users: [message.user] });
+            socket.emit('rtc-message', { roomId: message.roomId, users: [message.user] });
+            console.log(rooms)
+        }
     });
 })
