@@ -1,0 +1,227 @@
+* {
+    margin: 0;
+    padding: 0;
+  }
+
+  ::-webkit-scrollbar {
+    height: 0;
+    overflow: visible;
+    width: 10px;
+    border-left:1px solid rgb(229, 229, 229);
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, .2);
+    background-clip: padding-box;
+    min-height: 28px;
+    padding: 100px 0 0;
+    box-shadow: inset 1px 1px 0 rgba(0,0,0,.1),inset 0 -1px 0 rgba(0,0,0,.07);
+    border-width: 1px 1px 1px 6px;
+  }
+  ::-webkit-scrollbar-button {
+    height: 0;
+    width: 0;
+  }
+  ::-webkit-scrollbar-track {
+    background-clip: padding-box;
+    border: solid transparent;
+    border-width: 0 0 0 4px;
+  }
+  ::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+
+  html, body {
+    /* background-color: black; */
+    font-family: 'Open Sans', 'Segoe UI Light','Segoe UI',Verdana,Arial;
+    font-size: 1.1em;
+    overflow: hidden;
+  }
+
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: black;
+    z-index: 1;
+  }
+
+  .btn-select-file {
+    position: absolute;
+    z-index: 2;
+    left: 40%;
+    top: 40%;
+    width: 100px;
+    height: 100px;
+    -webkit-user-select: none;
+    border-radius: 50%;
+    text-shadow: 2px 2px white;
+    border: 1px solid #1B1B1B;
+    background-color: #D5D8D8;
+    cursor: pointer;
+    background-image: url(https://cdn.webrtc-experiment.com/images/btn-select-file.png);
+    outline: none;
+  }
+
+  .btn-select-file:hover {
+    background-color: #BBBBBB;
+  }
+
+  .btn-select-file:active {
+    background-color: #7F7B7B;
+  }
+
+  iframe {
+    position: absolute;
+    width: 80%;
+    height: 96%;
+    top: 87px;
+    left: 0;
+    right: 20;
+    bottom: 0;
+    border: 0;
+    outline: 0;
+    z-index: 5;
+    display: none;
+  }
+
+  #logs {
+    position: absolute;
+    background: white;
+    border-left: 1px solid black;
+    width: 20%;
+    top: 87px;
+    right: 0;
+    bottom: 0;
+    z-index: 6;
+    font-size: medium;
+    overflow: auto;
+    height: 100%;
+    border-top-left-radius: 5px;
+    font-size: 22px;
+  }
+
+  #logs p {
+    padding: 2px 4px;
+    border-bottom: 1px solid black;
+  }
+
+  header {
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    height: 61px;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 7;
+    padding-top: 8px;
+    background: #EFEBEB;
+    border-bottom: 1px solid white;
+  }
+
+  #number-of-users {
+    position: absolute;
+    right: 60px;
+    top: 16px;
+    width: 36px;
+    height: 30px;
+    -webkit-user-select: none;
+    border-radius: 5px;
+    border: 1px solid #FFFFFF;
+    background-color: #E83930;
+    z-index: 8;
+    text-align: center;
+    padding-top: 6px;
+    color: white;
+  }
+
+  #room-id {
+    outline: none;
+    border: 1px solid black;
+    padding: 1px 3px;
+    font-size: 100%;
+    background: rgba(255, 255, 255, 0.28);
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+  }
+
+  #join-room {
+    border: 1px solid black;
+    background: rgba(255, 255, 255, 0.28);
+    padding: 1px 3px;
+    border-left: 0;
+    font-size: 100%;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+  }
+
+   .android-app-icon {
+     background-repeat: no-repeat;
+     background-position: center center;
+     background-size: 64px 64px;
+     background-image: url(https://cdn.webrtc-experiment.com/images/android-app-icon.png);
+     width: 64px;
+     height: 64px;
+     position: absolute;
+     bottom: 5px;
+     left: 15px;
+     z-index: 9999;
+   }
+
+   .chrome-web-store-icon {
+    background-repeat: no-repeat;
+     background-position: center center;
+     background-size: 64px 64px;
+     background-image: url(https://cdn.webrtc-experiment.com/images/chrome-web-store-icon.png);
+     width: 64px;
+     height: 64px;
+     position: absolute;
+     bottom: 5px;
+     left: 90px;
+     z-index: 9999;
+   }
+
+
+  @media all and (max-width: 500px) {
+    #logs {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      top: auto;
+      height: 40%;
+      border-left: 0;
+      border-top: 1px solid black;
+      font-size: 18px;
+    }
+
+    .btn-select-file {
+      top: 20%;
+      left: 40%;
+    }
+
+    #room-id {
+      width: 40%;
+    }
+
+    .ribbon{
+      height: 150%;
+      width: 80%;
+    }
+
+    .ribbon h1 {
+      font-size: 20px!important;
+    }
+
+    #number-of-users {
+      right: 50px;
+    }
+
+    .android-app-icon, .chrome-web-store-icon {
+      display: none;
+    }
+  }
+
+  hr {border:0;}

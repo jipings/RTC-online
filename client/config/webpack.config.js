@@ -1,4 +1,4 @@
-'use strict';
+
 
 const fs = require('fs');
 const path = require('path');
@@ -307,6 +307,7 @@ module.exports = function(webpackEnv) {
             },
           ],
           include: paths.appSrc,
+          exclude: paths.rtcconnect,
         },
         {
           // "oneOf" will traverse all following loaders until one will
