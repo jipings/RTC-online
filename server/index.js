@@ -65,7 +65,7 @@ if (pfx === true) {
     };
 }
 
-const httpServer = https.createServer(options, app);
+const httpServer = http.createServer(app);
 RTCMultiConnectionServer.beforeHttpListen(httpServer, config);
 
 httpServer.listen(PORT, process.env.IP || "0.0.0.0", () => {
@@ -89,6 +89,10 @@ ioServer(httpServer).on('connection', (socket) => {
         socket.broadcast.emit(params.socketCustomEvent, message);
     });
 
+    socket.on('*', (msg) => {
+        console.log('message', msg);
+    })
+
     // rtc-message
   
     socket.on('rtc-message', (message) => {
@@ -102,10 +106,12 @@ ioServer(httpServer).on('connection', (socket) => {
                 users.push(user);
             }
 
+            socket.emit('rtc-message', { roomId: message.roomId, users });
             socket.broadcast.emit('rtc-message', { roomId: message.roomId, users });
         } else {
             rooms.push({ roomId: message.roomId, users: [message.user] });
-            socket.broadcast.emit('rtc-message', { roomId: message.roomId, users: [message.user] });
+            socket.emit('rtc-message', { roomId: message.roomId, users: [message.user] });
+            socket.broadcast.emit('rtc-message',{ roomId: message.roomId, users: [message.user] });
             console.log(rooms)
         }
     });
