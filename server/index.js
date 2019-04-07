@@ -1,5 +1,6 @@
 
 const ioServer = require('socket.io');
+
 const RTCMultiConnectionServer = require('../RTCMultiConnection-Server/node_scripts');
 
 let PORT =  9001;
@@ -125,4 +126,17 @@ ioServer(httpServer).on('connection', (socket) => {
         console.log('rtc-message-ice')
         socket.broadcast.emit('rtc-message-ice', message);
     });
+
+    socket.on('profile-mp4', ({filename}) => {
+        // fs.createReadStream('./video/chrome.mp4');
+        fs.readFile(`./video/${filename}`, (err, buf) => {
+            console.log(buf);
+            if(!err) {
+                socket.emit('profile-mp4', { file: true, buffer: buf });
+            } else {
+                socket.emit('profile-mp4', { file: false, buffer: null });
+            }
+            
+        });
+    })
 })
