@@ -6,16 +6,27 @@ const RTCMultiConnectionServer = require('../RTCMultiConnection-Server/node_scri
 let PORT =  9001;
 
 const express = require('express');
-const app = express();
+const cors = require('cors'); // 设置跨域
+
+const app = express(cors());
 const path = require('path');
 const http = require('http');
 const fs = require('fs');
 
 const https = require('https');
+var mp4 = require('mp4-stream')
 
 // app.get('/', (req, res) => {
 //     res.sendFile(path.join(__dirname + '/public/index.html'));
 // });
+app.get('/api/video/chrome.mp4',cors(), (req, res) => {
+    const { Url } = req;
+    console.log(req.headers);
+    // res.json({msg: 'This is CORS-enabled for all origins!'})
+    res.sendFile(path.join(__dirname + '/chrome.mp4'));
+    // res.end();
+});
+
 const jsonPath = {
     config: 'config.json',
     logs: 'logs.json'
@@ -129,8 +140,32 @@ ioServer(httpServer).on('connection', (socket) => {
 
     socket.on('profile-mp4', ({filename}) => {
         // fs.createReadStream('./video/chrome.mp4');
+        var decode = mp4.decode()
+
+        // fs.createReadStream(`./video/${filename}`).pipe(decode).on('box', (headers) => {
+        //     console.log('found box (' + headers.type + ') (' + headers.length + ')')
+        //     if (headers.type === 'mdat') {
+        //         // you can get the contents as a stream
+        //         console.log('box has stream data (consume stream to continue)')
+        //         decode.stream().resume()
+        //     } else if (headers.type === 'moof') {
+        //         // you can ignore some boxes
+        //         decode.ignore()
+        //     } else {
+        //         // or you can fully decode them
+        //         decode.decode(function (box) {
+        //             console.log('box contents:');
+        //             socket.emit('profile-mp4', { file: true, buffer: box });
+        //         })
+        //     }
+        // })
+        
+        // stream.on('readable', () => {
+        //     socket.emit('profile-mp4', { file: true, buffer: stream.read() });
+        // });
+
         fs.readFile(`./video/${filename}`, (err, buf) => {
-            console.log(buf);
+            console.log(typeof buf);
             if(!err) {
                 socket.emit('profile-mp4', { file: true, buffer: buf });
             } else {
